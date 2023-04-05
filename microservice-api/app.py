@@ -26,4 +26,4 @@ def task(id_task):
     
 @app.route('/api/files/<filename>')
 def filename(filename):
-    return "GET - filename"
+    return "GET - filename: {}".format(filename)
