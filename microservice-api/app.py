@@ -1,7 +1,14 @@
 from flask import Flask, request
+from Models import db
 
+# Configuration
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db.init_app(app)
+
+# Endpoints
 @app.route('/api/auth/signup', methods = ['POST'])
 def signup():
     return "POST - sign up"
