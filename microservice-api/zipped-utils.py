@@ -12,7 +12,7 @@ def myCompressFileLocal():
 def myCompressFileWeb():
     #TODO -> ruta donde esta alojado el archivo
     request = "https://docs.aws.amazon.com/es_es/whitepapers/latest/aws-overview/aws-overview.pdf"
-    #se agrega certificado para acceder al archivo
+    #se agrega certificado para acceder al archivo en la nuhe
     response = urlopen(request, context=ssl.create_default_context(cafile=certifi.where()))
     # TODO -> el primer parametro va la ruta del archivo en local
     myZip = zipfile.ZipFile('myZip.zip', 'w')
