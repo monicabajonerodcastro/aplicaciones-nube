@@ -1,6 +1,7 @@
 import pika, json
 
-HOST_RABBIT_MQ = 'rabbitmq'
+#HOST_RABBIT_MQ = 'rabbitmq'
+HOST_RABBIT_MQ = 'localhost'
 
 def publish_message(queue, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
