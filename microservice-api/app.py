@@ -1,6 +1,6 @@
 from flask import Flask, request
 from Models import db
-from service import create_task, save_task_request, get_task_by_id
+from service import create_task, save_task_request, get_task_by_id, delete_task_by_id
 import json
 
 # Configuration
@@ -31,7 +31,7 @@ def tasks():
 @app.route('/api/tasks/<id_task>', methods = ['GET', 'DELETE'])
 def task(id_task):
     if request.method == 'DELETE':
-        return "DELETE - task by id {}".format(id_task)
+        return delete_task_by_id(id_task)
     else:
         return get_task_by_id(id_task)
     

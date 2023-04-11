@@ -4,6 +4,8 @@ from Models import db, Tasks, TasksSchema
 from utils import publish_message
 
 UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files"
+#UPLOAD_FOLDER = "/microservice-api/uploaded-files"
+
 task_schema = TasksSchema()
 
 def create_task(request):
@@ -64,3 +66,20 @@ def get_task_by_id(id):
         }
         return json.dumps(message), 404
     return task_schema.dump(task)
+
+def delete_task_by_id(id):
+    task = Tasks.query.get(id)
+    if task is None:
+        message = {
+            "status" : 1,
+            "message" : "La tarea con el id {} no se encuentra registrada".format(id)
+        }
+        return json.dumps(message), 404
+    
+    db.session.delete(task)
+    db.session.commit()
+    message = {
+        "status" : 0,
+        "message" : "La tarea con el id {} fue eliminada exitosamente".format(id)
+    }
+    return json.dumps(message)
