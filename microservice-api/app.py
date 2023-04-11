@@ -1,6 +1,6 @@
 from flask import Flask, request
 from Models import db
-from service import create_task, save_task_request
+from service import create_task, save_task_request, get_task_by_id
 import json
 
 # Configuration
@@ -33,7 +33,7 @@ def task(id_task):
     if request.method == 'DELETE':
         return "DELETE - task by id {}".format(id_task)
     else:
-        return "GET - task by id {}".format(id_task)
+        return get_task_by_id(id_task)
     
 @app.route('/api/files/<filename>')
 def filename(filename):

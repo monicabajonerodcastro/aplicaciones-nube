@@ -1,9 +1,10 @@
 import os, uuid, datetime, json
 from werkzeug.utils import secure_filename
-from Models import db, Tasks
+from Models import db, Tasks, TasksSchema
 from utils import publish_message
 
 UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files"
+task_schema = TasksSchema()
 
 def create_task(request):
     message = {
@@ -53,3 +54,13 @@ def save_task_request(request):
     new_task = Tasks(id=id_task, path=path, status="UPLOADED", time=datetime.datetime.utcnow(), format=format_task)
     db.session.add(new_task)
     db.session.commit()
+
+def get_task_by_id(id):
+    task = Tasks.query.get(id)
+    if task is None:
+        message = {
+            "status" : 1,
+            "message" : "La tarea con el id {} no se encuentra registrada".format(id)
+        }
+        return json.dumps(message), 404
+    return task_schema.dump(task)
