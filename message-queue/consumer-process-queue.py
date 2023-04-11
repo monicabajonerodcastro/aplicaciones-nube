@@ -1,5 +1,5 @@
 import pika, sys, os
-from service import call_endpoint_save
+from service import call_endpoint_process
 
 HOST_RABBIT_MQ = 'rabbitmq'
 #HOST_RABBIT_MQ = 'localhost' -> Comentar para Docker. Quitar comentario para local
@@ -7,14 +7,14 @@ HOST_RABBIT_MQ = 'rabbitmq'
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
     channel = connection.channel()
-    channel.queue_declare(queue="requests_queue")
+    channel.queue_declare(queue="processes_queue")
 
     def callback(ch, method, properties, body):
-        print(" ======================= Request Received =======================", flush=True)
-        call_endpoint_save(body)
+        print(" ======================= Process Received =======================", flush=True)
+        call_endpoint_process(body)
 
-    channel.basic_consume(queue="requests_queue", auto_ack=True, on_message_callback=callback)
-    print(" *********************** Waiting for incoming requests ***********************", flush=True)
+    channel.basic_consume(queue="processes_queue", auto_ack=True, on_message_callback=callback)
+    print(" *********************** Waiting for incoming processes ***********************", flush=True)
 
     channel.start_consuming()
 

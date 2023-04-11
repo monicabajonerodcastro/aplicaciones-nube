@@ -1,10 +1,10 @@
 import os, uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema
-from utils import publish_message
+from utils import publish_message, compress_local_file
 
-UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files"
-#UPLOAD_FOLDER = "/microservice-api/uploaded-files"
+#UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files" -> Comentar para Docker. Quitar comentario para local
+UPLOAD_FOLDER = "/microservice-api/uploaded-files"
 
 task_schema = TasksSchema()
 
@@ -53,7 +53,8 @@ def save_task_request(request):
     format_task = request.json['format']
     path = request.json['path']
 
-    new_task = Tasks(id=id_task, path=path, status="UPLOADED", time=datetime.datetime.utcnow(), format=format_task)
+    time_now = datetime.datetime.utcnow()
+    new_task = Tasks(id=id_task, path=path, status="UPLOADED", time=time_now, format=format_task, last_time=time_now)
     db.session.add(new_task)
     db.session.commit()
 
@@ -83,3 +84,20 @@ def delete_task_by_id(id):
         "message" : "La tarea con el id {} fue eliminada exitosamente".format(id)
     }
     return json.dumps(message)
+
+def process_task_by_id(id):
+    task = Tasks.query.get(id)
+    if task is not None:
+        task.status = "PROCESSING"
+        task.last_time = datetime.datetime.utcnow()
+        db.session.commit()
+        try:
+            result_path = compress_local_file(task.path)
+            task.status = "PROCESSED"
+            task.last_time = datetime.datetime.utcnow()
+            task.result_path = result_path
+            db.session.commit()
+        except:
+            task.status = "UPLOADED"
+            task.last_time = datetime.datetime.utcnow()
+            db.session.commit()
