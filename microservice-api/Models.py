@@ -9,10 +9,14 @@ class TasksSchema(Schema):
     status = fields.Str()
     time = fields.Str()
     format = fields.Str()
+    last_time = fields.Str()
+    result_path = fields.Str()
 
 class Tasks(db.Model):
     id = db.Column(db.String, primary_key=True)
-    path = db.Column(db.String(200))
+    path = db.Column(db.String(1000))
     status = db.Column(db.String(30))
     time = db.Column(db.DateTime())
     format = db.Column(db.String(5))
+    last_time = db.Column(db.DateTime())
+    result_path = db.Column(db.String(1000))

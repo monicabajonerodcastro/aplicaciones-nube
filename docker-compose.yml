@@ -23,6 +23,13 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+  message-queue-process:
+    build:
+      context: message-queue
+    command: "python consumer-process-queue.py"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   microservice-api:
     build: 
       context: microservice-api

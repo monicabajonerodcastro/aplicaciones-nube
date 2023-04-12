@@ -5,5 +5,7 @@ WORKDIR /microservice-api
 COPY . .
 
 RUN pip install -r requirements.txt
+RUN mkdir -p /microservice-api/processed-files
+RUN mkdir -p /microservice-api/uploaded-files
 
 CMD gunicorn --bind 0.0.0.0:5002 app:app

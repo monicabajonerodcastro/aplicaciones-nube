@@ -1,6 +1,6 @@
 from flask import Flask, request
 from Models import db
-from service import create_task, save_task_request, get_task_by_id
+from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id
 import json
 
 # Configuration
@@ -31,7 +31,7 @@ def tasks():
 @app.route('/api/tasks/<id_task>', methods = ['GET', 'DELETE'])
 def task(id_task):
     if request.method == 'DELETE':
-        return "DELETE - task by id {}".format(id_task)
+        return delete_task_by_id(id_task)
     else:
         return get_task_by_id(id_task)
     
@@ -46,6 +46,15 @@ def save_task():
     message = {
         "status": 0,
         "message": "Task creado en la base de datos" 
+    }
+    return json.dumps(message), 200
+
+@app.route('/process-task/<id_task>', methods = ['POST'])
+def process_task(id_task):
+    process_task_by_id(id_task)
+    message = {
+        "status": 0,
+        "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
     }
     return json.dumps(message), 200
 
