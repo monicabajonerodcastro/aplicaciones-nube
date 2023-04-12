@@ -2,7 +2,8 @@ from flask import Flask, request
 from Models import db, Usuario
 from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, save_user,login_user
 import json
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager,jwt_required
+
 
 # Configuration
 app = Flask(__name__)
@@ -13,6 +14,7 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 
 db.init_app(app)
+jwt = JWTManager(app)
 
 # Public Endpoints
 @app.route('/api/auth/signup', methods = ['POST'])
@@ -35,21 +37,27 @@ def signup():
 def login():
     return login_user(request)
 
+
 @app.route('/api/tasks', methods = ['GET', 'POST'])
+@jwt_required()
 def tasks():
     if request.method == 'POST':
         return create_task(request)
     else:
         return "GET - tasks"
-    
+
+
 @app.route('/api/tasks/<id_task>', methods = ['GET', 'DELETE'])
+@jwt_required()   
 def task(id_task):
     if request.method == 'DELETE':
         return delete_task_by_id(id_task)
     else:
         return get_task_by_id(id_task)
-    
+
+
 @app.route('/api/files/<filename>')
+@jwt_required()   
 def filename(filename):
     return "GET - filename: {}".format(filename)
 
@@ -74,4 +82,4 @@ def process_task(id_task):
 
 with app.app_context():
     db.create_all()
-    jwt = JWTManager(app)
+    
