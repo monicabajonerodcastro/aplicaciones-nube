@@ -1,9 +1,11 @@
 import os, uuid, datetime, json
 from werkzeug.utils import secure_filename
-from Models import db, Tasks, TasksSchema
+from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message, compress_local_file
+import hashlib
 
-#UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files" -> Comentar para Docker. Quitar comentario para local
+
+#UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files" #-> Comentar para Docker. Quitar comentario para local
 UPLOAD_FOLDER = "/microservice-api/uploaded-files"
 
 task_schema = TasksSchema()
@@ -101,3 +103,10 @@ def process_task_by_id(id):
             task.status = "UPLOADED"
             task.last_time = datetime.datetime.utcnow()
             db.session.commit()
+
+def save_user(request):
+    contrasena_encriptada = hashlib.md5(request.json["password1"].encode('utf-8')).hexdigest()
+    nuevo_usuario = Usuario(usuario=request.json["username"], contrasena=contrasena_encriptada,correo=request.json["email"])
+    db.session.add(nuevo_usuario)
+    db.session.commit()   
+    return {"mensaje": "usuario creado exitosamente", "id": nuevo_usuario.id}         

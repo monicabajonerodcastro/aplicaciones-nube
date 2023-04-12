@@ -1,7 +1,8 @@
 from flask import Flask, request
-from Models import db
-from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id
+from Models import db, Usuario
+from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, save_user
 import json
+import hashlib
 
 # Configuration
 app = Flask(__name__)
@@ -15,7 +16,19 @@ db.init_app(app)
 # Public Endpoints
 @app.route('/api/auth/signup', methods = ['POST'])
 def signup():
-    return "POST - sign up"
+
+    password1 = request.json["password1"]
+    password2 = request.json["password2"]
+
+    if len(password1)>0 and len(password2)>0 and password1==password2:
+        usuario = Usuario.query.filter(Usuario.usuario == request.json["username"]).first()
+        correo = Usuario.query.filter(Usuario.correo == request.json["email"]).first()
+        if usuario is None and correo is None:
+           return save_user(request)
+        else:
+            return "El username y/o email ya existe",404   
+    else: 
+        return "El  password no coincide",404
 
 @app.route('/api/auth/login', methods = ['POST'])
 def login():
