@@ -351,3 +351,4 @@ MigrationBackup/
 
 venv/
 microservice-api/application.db
+instance/

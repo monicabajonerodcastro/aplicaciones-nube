@@ -20,3 +20,9 @@ class Tasks(db.Model):
     format = db.Column(db.String(5))
     last_time = db.Column(db.DateTime())
     result_path = db.Column(db.String(1000))
+
+class Usuario(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    usuario = db.Column(db.String(50))
+    contrasena = db.Column(db.String(50))   
+    correo = db.Column(db.String(250))   
