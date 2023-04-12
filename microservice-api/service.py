@@ -2,6 +2,7 @@ import os, uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message, compress_local_file
+from flask_jwt_extended import jwt_required, create_access_token
 import hashlib
 
 
@@ -109,4 +110,15 @@ def save_user(request):
     nuevo_usuario = Usuario(usuario=request.json["username"], contrasena=contrasena_encriptada,correo=request.json["email"])
     db.session.add(nuevo_usuario)
     db.session.commit()   
-    return {"mensaje": "usuario creado exitosamente", "id": nuevo_usuario.id}         
+    return {"mensaje": "usuario creado exitosamente", "id": nuevo_usuario.id} 
+
+def login_user(request):
+    contrasena_encriptada = hashlib.md5(request.json["password"].encode('utf-8')).hexdigest()
+    usuario = Usuario.query.filter(Usuario.usuario == request.json["username"],
+                                    Usuario.contrasena == contrasena_encriptada).first()
+    db.session.commit()
+    if usuario is None:
+        return "El usuario no existe", 404
+    else:
+        token_de_acceso = create_access_token(identity=usuario.id)
+        return {"mensaje": "Inicio de sesión exitoso", "token": token_de_acceso, "id": usuario.id}        

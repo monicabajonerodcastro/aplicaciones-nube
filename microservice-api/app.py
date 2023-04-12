@@ -1,8 +1,8 @@
 from flask import Flask, request
 from Models import db, Usuario
-from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, save_user
+from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, save_user,login_user
 import json
-import hashlib
+from flask_jwt_extended import JWTManager
 
 # Configuration
 app = Flask(__name__)
@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///application.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
+app.config['JWT_SECRET_KEY'] = 'frase-secreta'
 
 db.init_app(app)
 
@@ -32,7 +33,7 @@ def signup():
 
 @app.route('/api/auth/login', methods = ['POST'])
 def login():
-    return "POST - login"
+    return login_user(request)
 
 @app.route('/api/tasks', methods = ['GET', 'POST'])
 def tasks():
@@ -73,3 +74,4 @@ def process_task(id_task):
 
 with app.app_context():
     db.create_all()
+    jwt = JWTManager(app)
