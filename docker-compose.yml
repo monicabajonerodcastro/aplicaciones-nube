@@ -33,6 +33,9 @@ services:
   microservice-api:
     build: 
       context: microservice-api
+  conversion_cron:
+    build:
+      context: conversion_cron
   nginx:
     image: nginx:latest
     volumes:

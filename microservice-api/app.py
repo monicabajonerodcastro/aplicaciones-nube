@@ -1,6 +1,6 @@
 from flask import Flask, request
 from Models import db
-from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id
+from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, publish_uploaded_tasks
 import json
 
 # Configuration
@@ -57,6 +57,10 @@ def process_task(id_task):
         "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
     }
     return json.dumps(message), 200
+
+@app.route('/publish-pending-tasks')
+def publish_pending_tasks():
+    return publish_uploaded_tasks()
 
 with app.app_context():
     db.create_all()

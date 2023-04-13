@@ -1,7 +1,7 @@
 import requests, json
 
-API_ENDPOINT_SAVE = "http://microservice-api:5003/save-task"
-API_ENDPOINT_PROCESS = "http://microservice-api:5003/process-task/{}"
+API_ENDPOINT_SAVE = "http://microservice-api:5002/save-task"
+API_ENDPOINT_PROCESS = "http://microservice-api:5002/process-task/{}"
 #API_ENDPOINT_SAVE = "http://127.0.0.1:5000/save-task" -> Comentar para Docker. Quitar comentario para local
 #API_ENDPOINT_PROCESS = "http://127.0.0.1:5000/process-task/{}" -> Comentar para Docker. Quitar comentario para local
 
