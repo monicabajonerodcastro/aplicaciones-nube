@@ -1,9 +1,10 @@
 FROM python:3.9.0b4-alpine3.12
 
-COPY conversion_cron /bin/conversion_cron
-COPY requirements.txt /bin/requirements.txt
+COPY /conversion_cron/conversion_cron /bin/conversion_cron
+COPY /conversion_cron/requirements.txt /bin/requirements.txt
+COPY /constants /constants 
 
-COPY root /var/spool/cron/crontabs/root
+COPY /conversion_cron/root /var/spool/cron/crontabs/root
 
 RUN chmod +x /bin/conversion_cron
 RUN pip install -r /bin/requirements.txt

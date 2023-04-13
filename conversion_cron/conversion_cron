@@ -1,9 +1,11 @@
-import datetime, requests
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
 
-API_ENDPOINT_PUBLISH = "http://microservice-api:5002/publish-pending-tasks" 
-#API_ENDPOINT_PUBLISH = "http://127.0.0.1:5000/publish-pending-tasks" #-> Comentar para Docker. Quitar comentario para local
+import datetime, requests
+from constants import API_ENDPOINT_PUBLISH
 
 now = datetime.datetime.utcnow()
 response = requests.get(url = API_ENDPOINT_PUBLISH)
 response_json = response.json()
-print("Se enviaron {} peticiones a las {}".format(response_json["count"], now))
+print("Se enviaron {} peticiones a las {}".format(response_json["count"], now)) 

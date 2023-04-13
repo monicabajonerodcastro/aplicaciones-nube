@@ -41,7 +41,7 @@ def login():
 @jwt_required()
 def tasks():
     if request.method == 'POST':
-        return json.dumps(create_task(request))
+        return create_task(request)
     else:
         return "GET - tasks"
 

@@ -1,8 +1,10 @@
-import pika, sys, os
-from service import call_endpoint_save
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
 
-HOST_RABBIT_MQ = 'rabbitmq'
-#HOST_RABBIT_MQ = 'localhost' -> Comentar para Docker. Quitar comentario para local
+import pika
+from service import call_endpoint_save
+from constants import HOST_RABBIT_MQ
 
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
@@ -28,3 +30,4 @@ if __name__ == '__main__':
             sys.exit(0)
         except:
             os._exit(0)
+ 
