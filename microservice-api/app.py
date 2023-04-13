@@ -83,5 +83,4 @@ def process_task(id_task):
 
 with app.app_context():
     db.create_all()
-    crear_tareas_default()
     
