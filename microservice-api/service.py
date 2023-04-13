@@ -1,10 +1,15 @@
-import os, uuid, datetime, json
-from werkzeug.utils import secure_filename
-from Models import db, Tasks, TasksSchema
-from utils import publish_message, compress_local_file
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
 
-#UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files" -> Comentar para Docker. Quitar comentario para local
-UPLOAD_FOLDER = "/microservice-api/uploaded-files"
+import uuid, datetime, json
+from werkzeug.utils import secure_filename
+from Models import db, Tasks, TasksSchema, Usuario
+from utils import publish_message, compress_local_file
+from flask_jwt_extended import create_access_token
+import hashlib
+from constants import UPLOAD_FOLDER 
+
 
 task_schema = TasksSchema()
 
@@ -111,7 +116,6 @@ def publish_uploaded_tasks():
         message_to_publish = {
             "id" : task.id
         }
-        print(task.id)
         publish_message(queue="processes_queue", message=message_to_publish)
         task.status = 'PROCESSING'
         db.session.commit()
@@ -122,3 +126,22 @@ def publish_uploaded_tasks():
         "count" : count
     }
     return message
+
+def save_user(request):
+    contrasena_encriptada = hashlib.md5(request.json["password1"].encode('utf-8')).hexdigest()
+    nuevo_usuario = Usuario(usuario=request.json["username"], contrasena=contrasena_encriptada,correo=request.json["email"])
+    db.session.add(nuevo_usuario)
+    db.session.commit()   
+    return {"mensaje": "usuario creado exitosamente", "id": nuevo_usuario.id} 
+
+def login_user(request):
+    contrasena_encriptada = hashlib.md5(request.json["password"].encode('utf-8')).hexdigest()
+    usuario = Usuario.query.filter(Usuario.usuario == request.json["username"],
+                                    Usuario.contrasena == contrasena_encriptada).first()
+    db.session.commit()
+    if usuario is None:
+        return "El usuario no existe", 404
+    else:
+        token_de_acceso = create_access_token(identity=usuario.id)
+        return {"mensaje": "Inicio de sesión exitoso", "token": token_de_acceso, "id": usuario.id}        
+

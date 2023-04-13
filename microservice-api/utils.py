@@ -4,7 +4,7 @@ import pika, json, zipfile
 HOST_RABBIT_MQ = 'rabbitmq' 
 #HOST_RABBIT_MQ = 'localhost' #-> Comentar para Docker. Quitar comentario para local
 
-#UPLOAD_PROCESSED_FOLDER = "/Users/mbajonero/Downloads/processed-files/{}.zip" -> Comentar para Docker. Quitar comentario para local
+#UPLOAD_PROCESSED_FOLDER = "/Users/mbajonero/Downloads/processed-files/{}.zip" #-> Comentar para Docker. Quitar comentario para local
 UPLOAD_PROCESSED_FOLDER = "/microservice-api/processed-files/{}.zip"
 
 def publish_message(queue, message):
