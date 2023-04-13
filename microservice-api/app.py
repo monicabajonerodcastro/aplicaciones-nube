@@ -1,10 +1,9 @@
 from Models import crear_tareas_default
 from flask import Flask, request
 from Models import db, Usuario
-from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user
+from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
 import json
 from flask_jwt_extended import JWTManager,jwt_required
-
 
 # Configuration
 app = Flask(__name__)
@@ -80,6 +79,10 @@ def process_task(id_task):
         "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
     }
     return json.dumps(message), 200
+
+@app.route('/publish-pending-tasks')
+def publish_pending_tasks():
+    return publish_uploaded_tasks()
 
 with app.app_context():
     db.create_all()

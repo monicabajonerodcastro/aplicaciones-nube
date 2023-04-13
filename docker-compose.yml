@@ -18,21 +18,28 @@ services:
       start_period: 30s
   message-queue-request:
     build:
-      context: message-queue
+      context: ../aplicaciones-nube
+      dockerfile: ./message-queue/Dockerfile
     command: "python consumer-request-queue.py"
     depends_on:
       rabbitmq:
         condition: service_healthy
   message-queue-process:
     build:
-      context: message-queue
+      context: ../aplicaciones-nube
+      dockerfile: ./message-queue/Dockerfile
     command: "python consumer-process-queue.py"
     depends_on:
       rabbitmq:
         condition: service_healthy
   microservice-api:
     build: 
-      context: microservice-api
+      context: ../aplicaciones-nube
+      dockerfile: ./microservice-api/Dockerfile
+  conversion_cron:
+    build:
+      context: ../aplicaciones-nube
+      dockerfile: ./conversion_cron/Dockerfile
   nginx:
     image: nginx:latest
     volumes:

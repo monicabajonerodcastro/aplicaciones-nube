@@ -1,13 +1,15 @@
-import os, uuid, datetime, json
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
+
+import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message, compress_local_file
-from flask_jwt_extended import jwt_required, create_access_token
+from flask_jwt_extended import create_access_token
 import hashlib
+from constants import UPLOAD_FOLDER 
 
-
-#UPLOAD_FOLDER = "/Users/mbajonero/Downloads/uploaded-files" #-> Comentar para Docker. Quitar comentario para local
-UPLOAD_FOLDER = "/microservice-api/uploaded-files"
 
 task_schema = TasksSchema()
 
@@ -115,19 +117,39 @@ def delete_task_by_id(id):
 def process_task_by_id(id):
     task = Tasks.query.get(id)
     if task is not None:
-        task.status = "PROCESSING"
-        task.last_time = datetime.datetime.utcnow()
+        if task.status == "PROCESSING":
+            task.last_time = datetime.datetime.utcnow()
+            db.session.commit()
+            try:
+                result_path = compress_local_file(task.path)
+                task.status = "PROCESSED"
+                task.last_time = datetime.datetime.utcnow()
+                task.result_path = result_path
+                db.session.commit()
+            except:
+                task.status = "UPLOADED"
+                task.last_time = datetime.datetime.utcnow()
+                db.session.commit()
+        else:
+            print("La tarea {} se encuentra en estado {} y no se puede procesar".format(task.id, task.status), flush=True)
+
+def publish_uploaded_tasks():
+    tasks = Tasks.query.filter_by(status='UPLOADED')
+    count = 0
+    for task in tasks:
+        message_to_publish = {
+            "id" : task.id
+        }
+        publish_message(queue="processes_queue", message=message_to_publish)
+        task.status = 'PROCESSING'
         db.session.commit()
-        try:
-            result_path = compress_local_file(task.path)
-            task.status = "PROCESSED"
-            task.last_time = datetime.datetime.utcnow()
-            task.result_path = result_path
-            db.session.commit()
-        except:
-            task.status = "UPLOADED"
-            task.last_time = datetime.datetime.utcnow()
-            db.session.commit()
+        count += 1
+
+    message = {
+        "status" : 0,
+        "count" : count
+    }
+    return message
 
 def save_user(request):
     contrasena_encriptada = hashlib.md5(request.json["password1"].encode('utf-8')).hexdigest()
@@ -146,3 +168,4 @@ def login_user(request):
     else:
         token_de_acceso = create_access_token(identity=usuario.id)
         return {"mensaje": "Inicio de sesión exitoso", "token": token_de_acceso, "id": usuario.id}        
+

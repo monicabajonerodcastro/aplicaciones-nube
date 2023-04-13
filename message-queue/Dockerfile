@@ -4,7 +4,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /message-queue
 
-COPY . .
+COPY /constants /constants
+COPY /message-queue /message-queue
 
 RUN pip install -r requirements.txt
 

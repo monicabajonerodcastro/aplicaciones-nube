@@ -2,7 +2,8 @@ FROM python:3.9-slim
 
 WORKDIR /microservice-api
 
-COPY . .
+COPY /constants /constants
+COPY /microservice-api /microservice-api/
 
 RUN pip install -r requirements.txt
 RUN mkdir -p /microservice-api/processed-files

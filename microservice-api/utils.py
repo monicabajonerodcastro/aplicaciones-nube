@@ -1,10 +1,9 @@
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
+
 import pika, json, zipfile
-
-HOST_RABBIT_MQ = 'rabbitmq'
-#HOST_RABBIT_MQ = 'localhost' #-> Comentar para Docker. Quitar comentario para local
-
-#UPLOAD_PROCESSED_FOLDER = "/Users/mbajonero/Downloads/processed-files/{}.zip" #-> Comentar para Docker. Quitar comentario para local
-UPLOAD_PROCESSED_FOLDER = "/microservice-api/processed-files/{}.zip"
+from constants import HOST_RABBIT_MQ, UPLOAD_PROCESSED_FOLDER
 
 def publish_message(queue, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
