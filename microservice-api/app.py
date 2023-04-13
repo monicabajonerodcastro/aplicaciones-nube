@@ -1,6 +1,7 @@
+from Models import crear_tareas_default
 from flask import Flask, request
 from Models import db, Usuario
-from service import create_task, save_task_request, get_task_by_id, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
+from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
 import json
 from flask_jwt_extended import JWTManager,jwt_required
 
@@ -43,7 +44,7 @@ def tasks():
     if request.method == 'POST':
         return create_task(request)
     else:
-        return "GET - tasks"
+        return get_tasks(request)
 
 
 @app.route('/api/tasks/<id_task>', methods = ['GET', 'DELETE'])

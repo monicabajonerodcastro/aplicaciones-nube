@@ -63,6 +63,30 @@ def save_task_request(request):
     db.session.add(new_task)
     db.session.commit()
 
+def get_tasks(request):
+    if request.json["max"] is not "":
+        max=int(request.json["max"])
+        if request.json["order"] == "0":
+            tasks = Tasks.query.order_by(Tasks.id).limit(max).all()
+        elif request.json["order"] == "1":
+            tasks = Tasks.query.order_by(Tasks.id.desc()).limit(max).all()
+        else:
+            tasks = Tasks.query.limit(max).all()
+    else:
+        if request.json["order"] == "0":
+            tasks = Tasks.query.order_by(Tasks.id).all()
+        elif request.json["order"] == "1":
+            tasks = Tasks.query.order_by(Tasks.id.desc()).all()
+        else:
+            tasks = Tasks.query.all()  
+    if tasks is None or len(tasks)==0:
+        message = {
+            "status" : 1,
+            "message" : "No se encuentran tareas".format(id)
+        }
+        return json.dumps(message), 404
+    return [task_schema.dump(task) for task in tasks]
+
 def get_task_by_id(id):
     task = Tasks.query.get(id)
     if task is None:
