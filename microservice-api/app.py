@@ -4,7 +4,7 @@ sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
 
 from flask import Flask, request
 from Models import db, Usuario
-from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
+from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks,get_file_by_task
 import json
 from flask_jwt_extended import JWTManager,jwt_required
 
@@ -61,10 +61,12 @@ def task(id_task):
         return get_task_by_id(id_task)
 
 
-@app.route('/api/files/<filename>')
+@app.route('/api/files/<id_task>')
 @jwt_required()   
-def filename(filename):
-    return "GET - filename: {}".format(filename)
+def filename(id_task):
+
+    return get_file_by_task(id_task)
+    #return "GET - filename: {}".format(filename)
 
 # Private endpoints
 @app.route('/save-task', methods = ['POST'])

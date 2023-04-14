@@ -7,8 +7,9 @@ from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message, compress_local_file
 from flask_jwt_extended import create_access_token
-import hashlib
+import hashlib , base64
 from constants import UPLOAD_FOLDER 
+
 
 
 task_schema = TasksSchema()
@@ -188,4 +189,18 @@ def login_user(request):
     else:
         token_de_acceso = create_access_token(identity=usuario.id)
         return {"mensaje": "Inicio de sesión exitoso", "token": token_de_acceso, "id": usuario.id}        
+
+def get_file_by_task(id_task):
+    task = Tasks.query.get(id_task)
+    if task is None:
+        message = {
+            "status" : 1,
+            "message" : "La tarea con el id {} no se encuentra registrada".format(id_task)
+        }
+        return json.dumps(message), 404
+    else:
+        with open(task.result_path , "rb") as any_file:
+            data = base64.b64encode(any_file.read())
+            print(data)
+            return {"status":0 ,"mensaje": data.decode('utf-8')}        
 
