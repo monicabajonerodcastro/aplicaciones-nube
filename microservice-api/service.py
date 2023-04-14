@@ -32,6 +32,25 @@ def create_task(request):
             status = 404
         
         else:
+            file_with_name = False
+            counter_file = 0
+            for path_file in os.listdir(UPLOAD_FOLDER):
+                if os.path.isfile(os.path.join(UPLOAD_FOLDER, path_file)):
+
+                    split_name = uploaded_file.filename.split(".")
+                    del split_name[len(split_name)-1]
+                    file_join = ".".join(split_name)
+
+                    if path_file == uploaded_file.filename or path_file.startswith(file_join):
+                        file_with_name = True
+                        counter_file += 1
+
+            if file_with_name:
+                split_name = uploaded_file.filename.split(".")
+                extension = split_name[len(split_name)-1]
+                del split_name[len(split_name)-1]
+                uploaded_file.filename = ".".join(split_name)+ "("+str(counter_file)+")." + extension
+
             filename = secure_filename(uploaded_file.filename)
 
             id_task = str(uuid.uuid4())
@@ -121,12 +140,13 @@ def process_task_by_id(id):
             task.last_time = datetime.datetime.utcnow()
             db.session.commit()
             try:
-                result_path = compress_local_file(task.path)
+                result_path = compress_local_file(task.path, task.format)
                 task.status = "PROCESSED"
                 task.last_time = datetime.datetime.utcnow()
                 task.result_path = result_path
                 db.session.commit()
-            except:
+            except Exception as e:
+                print(e)
                 task.status = "UPLOADED"
                 task.last_time = datetime.datetime.utcnow()
                 db.session.commit()

@@ -15,7 +15,7 @@ def publish_message(queue, message):
     print(" ======================= Message sent to the queue {} =======================".format(queue), flush=True)
     connection.close()
 
-def compress_local_file(path):
+def compress_local_file(path, new_format):
     split_path = path.split("/")
     file_name = split_path[len(split_path)-1]
     split_file_name = file_name.split(".")
@@ -24,7 +24,7 @@ def compress_local_file(path):
     else:
         file_name_no_extension = file_name
 
-    my_zip = zipfile.ZipFile(UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension), 'w')
+    my_zip = zipfile.ZipFile(UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension, new_format), 'w')
     my_zip.write(path, compress_type=zipfile.ZIP_DEFLATED)
     my_zip.close()
-    return UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension)
+    return UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension, new_format)
