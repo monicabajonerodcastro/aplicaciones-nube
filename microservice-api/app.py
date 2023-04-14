@@ -1,4 +1,3 @@
-from Models import crear_tareas_default
 from flask import Flask, request
 from Models import db, Usuario
 from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
@@ -7,7 +6,8 @@ from flask_jwt_extended import JWTManager,jwt_required
 
 # Configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///application.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///application.db'
+app.config['SQLALCHEMY_DATABASE_URI']  = 'mysql://root:secret@127.0.0.1:33061/application'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
