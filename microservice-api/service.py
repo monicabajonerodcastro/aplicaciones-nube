@@ -199,8 +199,11 @@ def get_file_by_task(id_task):
         }
         return json.dumps(message), 404
     else:
-        with open(task.result_path , "rb") as any_file:
+        path = task.result_path
+        format = ""
+        if path is None:
+            path =task.path
+        with open(path , "rb") as any_file:
             data = base64.b64encode(any_file.read())
-            print(data)
-            return {"status":0 ,"mensaje": data.decode('utf-8')}        
+            return {"status":0 ,"format":path.partition(".")[2], "mensaje": data.decode('utf-8')}        
 
