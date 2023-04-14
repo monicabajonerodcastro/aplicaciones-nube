@@ -16,6 +16,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+  postgres:
+    image: 'postgres:latest'
+    restart: always
+    volumes:
+    - './postgres_data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_PASSWORD: "secret"
+      POSTGRES_DB: "application"
+    ports:
+    - '5432:5432'
   message-queue-request:
     build:
       context: ../aplicaciones-nube
@@ -36,6 +46,8 @@ services:
     build: 
       context: ../aplicaciones-nube
       dockerfile: ./microservice-api/Dockerfile
+    depends_on:
+      - postgres
   conversion_cron:
     build:
       context: ../aplicaciones-nube

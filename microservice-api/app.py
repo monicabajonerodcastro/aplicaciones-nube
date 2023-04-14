@@ -1,13 +1,18 @@
+#Import constants
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
+
 from flask import Flask, request
 from Models import db, Usuario
 from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks
 import json
 from flask_jwt_extended import JWTManager,jwt_required
 
+from constants import HOST_POSTGRES
+
 # Configuration
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///application.db'
-app.config['SQLALCHEMY_DATABASE_URI']  = 'mysql://root:secret@127.0.0.1:33061/application'
+app.config['SQLALCHEMY_DATABASE_URI']  = 'postgresql://postgres:secret@{}:5432/application'.format(HOST_POSTGRES)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
