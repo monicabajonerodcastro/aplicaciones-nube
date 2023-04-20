@@ -26,6 +26,11 @@ services:
       POSTGRES_DB: "application"
     ports:
     - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   message-queue-request:
     build:
       context: ../aplicaciones-nube
@@ -47,7 +52,8 @@ services:
       context: ../aplicaciones-nube
       dockerfile: ./microservice-api/Dockerfile
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
   conversion_cron:
     build:
       context: ../aplicaciones-nube

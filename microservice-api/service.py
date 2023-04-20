@@ -23,13 +23,13 @@ def create_task(request):
 
     if "file" not in request.files:
         message["status"] = 1
-        message["message"] = "No se encontró el archivo"
+        message["message"] = "No se encontro el parametro archivo"
         status = 404
     else:
         uploaded_file = request.files['file']
         if uploaded_file.filename == '':
             message["status"] = 1
-            message["message"] = "No se encontró el archivo"
+            message["message"] = "No se encontro el nombre dentro del archivo"
             status = 404
         
         else:
