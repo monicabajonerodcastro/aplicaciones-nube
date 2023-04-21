@@ -1,12 +1,12 @@
 ## VARIABLES DOCKER
 
-HOST_RABBIT_MQ = 'rabbitmq'
-API_ENDPOINT_PUBLISH = "http://microservice-api:5002/publish-pending-tasks" 
-API_ENDPOINT_SAVE = "http://microservice-api:5002/save-task"
-API_ENDPOINT_PROCESS = "http://microservice-api:5002/process-task/{}"   
-UPLOAD_FOLDER = "/microservice-api/uploaded-files" 
-UPLOAD_PROCESSED_FOLDER = "/microservice-api/processed-files/{}.{}"
-HOST_POSTGRES = 'postgres'
+HOST_RABBIT_MQ = 'host.docker.internal'
+API_ENDPOINT_PUBLISH = "http://host.docker.internal:5008/publish-pending-tasks" 
+API_ENDPOINT_SAVE = "http://host.docker.internal:5008/save-task"
+API_ENDPOINT_PROCESS = "http://host.docker.internal:5008/process-task/{}"   
+UPLOAD_FOLDER = "/api/microservice-api/uploaded-files" 
+UPLOAD_PROCESSED_FOLDER = "/api/microservice-api/processed-files/{}.{}"
+HOST_POSTGRES = 'host.docker.internal'
 """
 
 ## VARIABLES LOCAL

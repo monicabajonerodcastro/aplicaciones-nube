@@ -1,6 +1,9 @@
 #Import constants
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
+os_path = os.path.dirname(sys.path[0]).split("/")
+del os_path[len(os_path) - 1]
+if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
+else: sys.path.append(os.path.join("/",'constants'))
 
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
@@ -9,8 +12,6 @@ from utils import publish_message, compress_local_file
 from flask_jwt_extended import create_access_token
 import hashlib , base64
 from constants import UPLOAD_FOLDER 
-
-
 
 task_schema = TasksSchema()
 
