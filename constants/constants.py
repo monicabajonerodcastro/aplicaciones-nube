@@ -1,6 +1,6 @@
 ## VARIABLES DOCKER
 
-HOST_RABBIT_MQ = 'host.docker.internal'
+HOST_RABBIT_MQ = 'rabbitmq'
 API_ENDPOINT_PUBLISH = "http://host.docker.internal:5008/publish-pending-tasks" 
 API_ENDPOINT_SAVE = "http://host.docker.internal:5008/save-task"
 API_ENDPOINT_PROCESS = "http://host.docker.internal:5008/process-task/{}"   
