@@ -17,4 +17,5 @@ def call_endpoint_save(body):
 def call_endpoint_process(body):
     body_decoded = body.decode("utf-8")
     body_json = json.loads(body_decoded)
-    requests.post(url = API_ENDPOINT_PROCESS.format(body_json["id"])) 
+    r = requests.post(url = API_ENDPOINT_PROCESS.format(body_json["id"])) 
+    print(r)
