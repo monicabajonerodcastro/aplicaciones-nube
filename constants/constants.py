@@ -6,7 +6,7 @@ API_ENDPOINT_SAVE = "http://34.125.239.40:5002/save-task"
 API_ENDPOINT_PROCESS = "http://34.125.239.40:5002/process-task/{}"   
 UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
 UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
-HOST_POSTGRES = '34.125.22.159'
+HOST_POSTGRES = '34.125.79.66'
 """
 
 ## VARIABLES LOCAL
