@@ -15,7 +15,7 @@ from constants import HOST_POSTGRES
 
 # Configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:secret@{}:5432/application'.format(HOST_POSTGRES)
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://test_user:test_user@{}:5432/application'.format(HOST_POSTGRES)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
