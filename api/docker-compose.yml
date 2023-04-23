@@ -1,5 +1,9 @@
 version: '3.6'
 
+volunes:
+  files:
+    external: true
+
 services:
   microservice-api:
     build: 
@@ -8,7 +12,7 @@ services:
     ports:
     - 5002:5002
     volumes:
-    - /nfs_clientshare:/nfs_clientshare:ro
+    - files:/mnt/nfs_clientshare:ro
   nginx:
     image: nginx:latest
     volumes:
