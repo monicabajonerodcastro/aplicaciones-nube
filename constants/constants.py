@@ -1,12 +1,12 @@
-## VARIABLES DOCKER
+## VARIABLES CLOUD
 
-HOST_RABBIT_MQ = 'rabbitmq'
+HOST_RABBIT_MQ = '35.219.174.216'
 API_ENDPOINT_PUBLISH = "http://host.docker.internal:5008/publish-pending-tasks" 
 API_ENDPOINT_SAVE = "http://host.docker.internal:5008/save-task"
 API_ENDPOINT_PROCESS = "http://host.docker.internal:5008/process-task/{}"   
 UPLOAD_FOLDER = "/api/microservice-api/uploaded-files" 
 UPLOAD_PROCESSED_FOLDER = "/api/microservice-api/processed-files/{}.{}"
-HOST_POSTGRES = 'host.docker.internal'
+HOST_POSTGRES = '34.125.22.159'
 """
 
 ## VARIABLES LOCAL

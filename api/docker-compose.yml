@@ -6,7 +6,7 @@ services:
       context: ../../aplicaciones-nube
       dockerfile: ./api/microservice-api/Dockerfile
     ports:
-    - 5008:5008
+    - 5002:5002
   nginx:
     image: nginx:latest
     volumes:
