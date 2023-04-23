@@ -1,0 +1,23 @@
+version: '3.6'
+
+volumes:
+  files:
+    external: true
+
+services:
+  microservice-api:
+    build: 
+      context: ../../aplicaciones-nube
+      dockerfile: ./api/microservice-api/Dockerfile
+    ports:
+    - 5002:5002
+    volumes:
+    - files:/mnt/nfs_clientshare:ro
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - microservice-api
+    ports:
+      - "5001:5001"

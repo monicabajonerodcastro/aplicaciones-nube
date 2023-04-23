@@ -5,8 +5,8 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /message-queue
 
 COPY /constants /constants
-COPY /message-queue /message-queue
+COPY /services/message-queue /services/message-queue
 
-RUN pip install -r requirements.txt
+RUN pip install -r /services/message-queue/requirements.txt
 
 CMD gunicorn --bind 0.0.0.0:5003 app:app

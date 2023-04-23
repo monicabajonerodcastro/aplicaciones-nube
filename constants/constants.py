@@ -1,12 +1,12 @@
-## VARIABLES DOCKER
+## VARIABLES CLOUD
 
-HOST_RABBIT_MQ = 'rabbitmq'
-API_ENDPOINT_PUBLISH = "http://microservice-api:5002/publish-pending-tasks" 
-API_ENDPOINT_SAVE = "http://microservice-api:5002/save-task"
-API_ENDPOINT_PROCESS = "http://microservice-api:5002/process-task/{}"   
-UPLOAD_FOLDER = "/microservice-api/uploaded-files" 
-UPLOAD_PROCESSED_FOLDER = "/microservice-api/processed-files/{}.{}"
-HOST_POSTGRES = 'postgres'
+HOST_RABBIT_MQ = '35.219.174.216'
+API_ENDPOINT_PUBLISH = "http://34.125.239.40:5002/publish-pending-tasks" 
+API_ENDPOINT_SAVE = "http://34.125.239.40:5002/save-task"
+API_ENDPOINT_PROCESS = "http://34.125.239.40:5002/process-task/{}"   
+UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
+UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
+HOST_POSTGRES = '34.125.79.66'
 """
 
 ## VARIABLES LOCAL

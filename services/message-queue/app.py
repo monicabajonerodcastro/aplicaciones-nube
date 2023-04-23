@@ -1,6 +1,8 @@
 #Import constants
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'constants'))
+os_path = os.path.dirname(sys.path[0]).split("/")
+del os_path[len(os_path) - 1]
+sys.path.append(os.path.join("/".join(os_path),'constants'))
 
 from flask import Flask, request
 from Models import db, Usuario
@@ -66,7 +68,6 @@ def task(id_task):
 def filename(id_task):
 
     return get_file_by_task(id_task)
-    #return "GET - filename: {}".format(filename)
 
 # Private endpoints
 @app.route('/save-task', methods = ['POST'])
