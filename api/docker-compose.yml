@@ -1,6 +1,6 @@
 version: '3.6'
 
-volunes:
+volumes:
   files:
     external: true
 
