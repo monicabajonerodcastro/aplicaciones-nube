@@ -7,6 +7,8 @@ services:
       dockerfile: ./api/microservice-api/Dockerfile
     ports:
     - 5002:5002
+    volumes:
+    - /nfs_clientshare:/nfs_clientshare:ro
   nginx:
     image: nginx:latest
     volumes:
