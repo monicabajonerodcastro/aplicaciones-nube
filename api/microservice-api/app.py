@@ -7,7 +7,7 @@ else: sys.path.append(os.path.join("/",'constants'))
 
 from flask import Flask, request
 from Models import db, Usuario
-from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, process_task_by_id, save_user,login_user, publish_uploaded_tasks,get_file_by_task
+from service import create_task, save_task_request, get_task_by_id, get_tasks, delete_task_by_id, save_user,login_user, publish_uploaded_tasks,get_file_by_task
 import json
 from flask_jwt_extended import JWTManager,jwt_required
 
@@ -15,7 +15,7 @@ from constants import HOST_POSTGRES
 
 # Configuration
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://test_user:test_user@{}:5432/application'.format(HOST_POSTGRES)
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:secret@{}:5432/application'.format(HOST_POSTGRES)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
@@ -80,14 +80,6 @@ def save_task():
     }
     return json.dumps(message), 200
 
-@app.route('/process-task/<id_task>', methods = ['POST'])
-def process_task(id_task):
-    process_task_by_id(id_task)
-    message = {
-        "status": 0,
-        "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
-    }
-    return json.dumps(message), 200
 
 @app.route('/publish-pending-tasks')
 def publish_pending_tasks():

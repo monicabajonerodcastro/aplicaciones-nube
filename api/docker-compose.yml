@@ -1,10 +1,44 @@
 version: '3.6'
 
 volumes:
-  files:
+  web_data:
     external: true
-
 services:
+  rabbitmq:
+    image: 'rabbitmq:3.6-management-alpine'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      AMPQ_URL: 'ampq;//rabbitmq?connection_attempts=5&retry_delay=5'
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    healthcheck:
+      test: rabbitmqctl status || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+  message-queue-request:
+    build:
+      context: ../../aplicaciones-nube
+      dockerfile: ./api/message-queue/Dockerfile
+    command: "python /api/message-queue/consumer-request-queue.py"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  message-queue-process:
+    build:
+      context: ../../aplicaciones-nube
+      dockerfile: ./api/message-queue/Dockerfile
+    command: "python /api/message-queue/consumer-process-queue.py"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  conversion_cron:
+    build:
+      context: ../../aplicaciones-nube
+      dockerfile: ./api/conversion_cron/Dockerfile
   microservice-api:
     build: 
       context: ../../aplicaciones-nube
@@ -12,7 +46,7 @@ services:
     ports:
     - 5002:5002
     volumes:
-    - files:/mnt/nfs_clientshare:ro
+    - web_data:/mnt/nfs_clientshare:ro
   nginx:
     image: nginx:latest
     volumes:
@@ -21,3 +55,4 @@ services:
       - microservice-api
     ports:
       - "5001:5001"
+
