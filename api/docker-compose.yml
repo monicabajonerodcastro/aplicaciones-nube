@@ -1,7 +1,7 @@
 version: '3.6'
 
 volumes:
-  web_data:
+  files:
     external: true
 services:
   rabbitmq:
@@ -46,7 +46,7 @@ services:
     ports:
     - 5002:5002
     volumes:
-    - web_data:/mnt/nfs_clientshare:ro
+    - files:/mnt/nfs_clientshare
   nginx:
     image: nginx:latest
     volumes:
