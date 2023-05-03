@@ -19,7 +19,7 @@ API_ENDPOINT_PROCESS = "http://34.125.239.40:5002/process-task/{}"
 UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
 UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
 HOST_POSTGRES = '34.68.54.144'
-USER_POSTGRES = "test_user"
+USER_POSTGRES = "postgres"
 PASSWORD_POSTGRES = "test_user"
 
 """
