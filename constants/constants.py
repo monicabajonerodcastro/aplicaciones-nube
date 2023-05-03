@@ -12,7 +12,7 @@ PASSWORD_POSTGRES = "postgres"
 """
 
 ## VARIABLES CLOUD
-HOST_RABBIT_MQ = '35.219.174.216'
+HOST_RABBIT_MQ = 'rabbitmq'
 API_ENDPOINT_PUBLISH = "http://34.125.239.40:5002/publish-pending-tasks" 
 API_ENDPOINT_SAVE = "http://34.125.239.40:5002/save-task"
 API_ENDPOINT_PROCESS = "http://34.125.239.40:5002/process-task/{}"   
