@@ -14,11 +14,10 @@ services:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     healthcheck:
-      test: rabbitmqctl status || exit 1
-      interval: 15s
+      test: ["CMD", "ping", "-c","1", "localhost:5432"]
+      interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 30s
+      retries: 5
   message-queue-request:
     build:
       context: ../../aplicaciones-nube
