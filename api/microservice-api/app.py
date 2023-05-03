@@ -80,10 +80,13 @@ def save_task():
     }
     return json.dumps(message), 200
 
-
 @app.route('/publish-pending-tasks')
 def publish_pending_tasks():
     return publish_uploaded_tasks()
+
+@app.route('/health-check')
+def healt_check():
+    return "Status UP"
 
 with app.app_context():
     db.create_all()
