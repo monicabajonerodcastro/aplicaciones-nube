@@ -9,4 +9,4 @@ COPY /api/message-queue /api/message-queue
 
 RUN pip install -r /api/message-queue/requirements.txt
 
-CMD gunicorn --bind 0.0.0.0:5003 app:app
+CMD ["python", "/api/message-queue/consumer-process-queue.py"]

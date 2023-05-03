@@ -22,7 +22,6 @@ services:
     build:
       context: ../../aplicaciones-nube
       dockerfile: ./api/message-queue/Dockerfile
-    command: "python /api/message-queue/consumer-request-queue.py"
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -30,7 +29,6 @@ services:
     build:
       context: ../../aplicaciones-nube
       dockerfile: ./api/message-queue/Dockerfile
-    command: "python /api/message-queue/consumer-process-queue.py"
     depends_on:
       rabbitmq:
         condition: service_healthy
