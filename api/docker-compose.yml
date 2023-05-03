@@ -14,10 +14,11 @@ services:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     healthcheck:
-      test: ["CMD", "ping", "-c","1", "localhost:5432"]
-      interval: 30s
+      test: rabbitmqctl status || exit 1
+      interval: 15s
       timeout: 10s
-      retries: 5
+      retries: 3
+      start_period: 30s
   message-queue-request:
     build:
       context: ../../aplicaciones-nube
@@ -46,12 +47,4 @@ services:
     - 5002:5002
     volumes:
     - files:/mnt/nfs_clientshare
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - microservice-api
-    ports:
-      - "5001:5001"
 
