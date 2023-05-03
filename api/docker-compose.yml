@@ -5,7 +5,7 @@ volumes:
     external: true
 services:
   rabbitmq:
-    image: 'rabbitmq:3.8.5-management'
+    image: 'rabbitmq:3.6-management-alpine'
     ports:
       - '5672:5672'
       - '15672:15672'
@@ -14,10 +14,11 @@ services:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 1s
-      timeout: 3s
-      retries: 30
+      test: rabbitmqctl status || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
   message-queue-request:
     build:
       context: ../../aplicaciones-nube
