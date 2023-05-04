@@ -5,7 +5,7 @@ services:
     build:
       context: ../../aplicaciones-nube
       dockerfile: ./api/message-queue/Dockerfile
-    command: "python /apí/message-queue/consumer-request-queue.py"
+    command: "python /api/message-queue/consumer-request-queue.py"
   message-queue-process:
     build:
       context: ../../aplicaciones-nube
