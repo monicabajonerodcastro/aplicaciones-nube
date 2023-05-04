@@ -86,7 +86,7 @@ def publish_pending_tasks():
 
 @app.route('/health-check')
 def healt_check():
-    return "Status UP"
+    return "Status API UP"
 
 with app.app_context():
     db.create_all()

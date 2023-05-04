@@ -1,22 +1,28 @@
 """
 ## VARIABLES DOCKER-LOCAL
-HOST_RABBIT_MQ = 'rabbitmq'
-API_ENDPOINT_PUBLISH = "http://192.168.0.104:5002/publish-pending-tasks" 
-API_ENDPOINT_SAVE = "http://192.168.0.104:5002/save-task"
-API_ENDPOINT_PROCESS = "http://192.168.0.104:5004/process-task/{}"   
+HOST_RABBIT_MQ = '192.168.1.8'
+
+API_ENDPOINT_PUBLISH = "http://192.168.1.8:5002/publish-pending-tasks" 
+API_ENDPOINT_SAVE = "http://192.168.1.8:5002/save-task"
+
+API_ENDPOINT_PROCESS = "http://192.168.1.8:5004/process-task/{}"   
+
 UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
 UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
-HOST_POSTGRES = '192.168.0.104'
+HOST_POSTGRES = '192.168.1.8'
 USER_POSTGRES = "postgres"
 PASSWORD_POSTGRES = "postgres"
 """
 
 ## VARIABLES CLOUD
 HOST_RABBIT_MQ = 'rabbitmq'
+
 API_ENDPOINT_PUBLISH = "http://34.125.239.40:5002/publish-pending-tasks" 
 API_ENDPOINT_SAVE = "http://34.125.239.40:5002/save-task"
+
 API_ENDPOINT_PROCESS = "http://34.125.239.40:5002/process-task/{}"   
 UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
+
 UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
 HOST_POSTGRES = '34.68.54.144'
 USER_POSTGRES = "postgres"

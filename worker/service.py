@@ -16,7 +16,7 @@ def process_task_by_id(id):
                 task.result_path = result_path
                 db.session.commit()
             except Exception as e:
-                print(e)
+                print(e, flush=True)
                 task.status = "UPLOADED"
                 task.last_time = datetime.datetime.utcnow()
                 db.session.commit()

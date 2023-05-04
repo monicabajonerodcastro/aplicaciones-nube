@@ -28,11 +28,11 @@ git clone https://github.com/monicabajonerodcastro/aplicaciones-nube.git
 
 cd aplicaciones-nube
 
-git fetch && git checkout feature/separar-worker
+git fetch && git checkout feature/organizacion-componentes
 
-git pull origin feature/separar-worker
+git pull origin feature/organizacion-componentes
 
-cd api
+cd worker
 
 sudo docker volume create files
 

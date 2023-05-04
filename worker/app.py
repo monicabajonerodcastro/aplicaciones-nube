@@ -27,3 +27,7 @@ def process_task(id_task):
         "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
     }
     return json.dumps(message), 200
+
+@app.route('/health-check')
+def healt_check():
+    return "Status Worker UP"
