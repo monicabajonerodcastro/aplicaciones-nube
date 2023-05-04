@@ -8,11 +8,11 @@ else: sys.path.append(os.path.join("/",'constants'))
 from flask import Flask
 from Models import db
 from service import process_task_by_id
-from constants import HOST_POSTGRES
+from constants import HOST_POSTGRES, USER_POSTGRES, PASSWORD_POSTGRES
 import json
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:secret@{}:5432/application'.format(HOST_POSTGRES)
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://{}:{}@{}:5432/application'.format(USER_POSTGRES, PASSWORD_POSTGRES, HOST_POSTGRES)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
