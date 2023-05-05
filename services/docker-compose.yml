@@ -16,22 +16,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-  message-queue-request:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./services/message-queue/Dockerfile
-    command: "python /services/message-queue/consumer-request-queue.py"
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-  message-queue-process:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./services/message-queue/Dockerfile
-    command: "python /services/message-queue/consumer-process-queue.py"
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
   conversion_cron:
     build:
       context: ../../aplicaciones-nube

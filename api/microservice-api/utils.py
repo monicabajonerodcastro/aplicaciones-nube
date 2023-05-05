@@ -5,8 +5,8 @@ del os_path[len(os_path) - 1]
 if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
 else: sys.path.append(os.path.join("/",'constants'))
 
-import pika, json, zipfile
-from constants import HOST_RABBIT_MQ, UPLOAD_PROCESSED_FOLDER
+import pika, json
+from constants import HOST_RABBIT_MQ
 
 import os
 from google.cloud import storage

@@ -8,7 +8,7 @@ else: sys.path.append(os.path.join("/",'constants'))
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
-from utils import publish_message, compress_local_file
+from utils import publish_message
 from flask_jwt_extended import create_access_token
 import hashlib , base64
 from constants import UPLOAD_FOLDER 
@@ -135,25 +135,6 @@ def delete_task_by_id(id):
     }
     return json.dumps(message)
 
-def process_task_by_id(id):
-    task = Tasks.query.get(id)
-    if task is not None:
-        if task.status == "PROCESSING":
-            task.last_time = datetime.datetime.utcnow()
-            db.session.commit()
-            try:
-                result_path = compress_local_file(task.path, task.format)
-                task.status = "PROCESSED"
-                task.last_time = datetime.datetime.utcnow()
-                task.result_path = result_path
-                db.session.commit()
-            except Exception as e:
-                print(e)
-                task.status = "UPLOADED"
-                task.last_time = datetime.datetime.utcnow()
-                db.session.commit()
-        else:
-            print("La tarea {} se encuentra en estado {} y no se puede procesar".format(task.id, task.status), flush=True)
 
 def publish_uploaded_tasks():
     tasks = Tasks.query.filter_by(status='UPLOADED')
