@@ -8,7 +8,7 @@ else: sys.path.append(os.path.join("/",'constants'))
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
-from utils import publish_message
+from utils import publish_message, send_to_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
 from constants import UPLOAD_FOLDER 
@@ -34,39 +34,22 @@ def create_task(request):
             status = 404
         
         else:
-            file_with_name = False
-            counter_file = 0
-            for path_file in os.listdir(UPLOAD_FOLDER):
-                if os.path.isfile(os.path.join(UPLOAD_FOLDER, path_file)):
-
-                    split_name = uploaded_file.filename.split(".")
-                    del split_name[len(split_name)-1]
-                    file_join = ".".join(split_name)
-
-                    if path_file == uploaded_file.filename or path_file.startswith(file_join):
-                        file_with_name = True
-                        counter_file += 1
-
-            if file_with_name:
-                split_name = uploaded_file.filename.split(".")
-                extension = split_name[len(split_name)-1]
-                del split_name[len(split_name)-1]
-                uploaded_file.filename = ".".join(split_name)+ "("+str(counter_file)+")." + extension
-
             filename = secure_filename(uploaded_file.filename)
-
+            
             id_task = str(uuid.uuid4())
-            path = os.path.join(UPLOAD_FOLDER, filename)
             format_task = request.form['format']
 
             message_to_publish = {
                 "id" : id_task,
-                "path" : path,
+                "path" : filename,
                 "format" : format_task
             }
             
             publish_message(queue="requests_queue", message=message_to_publish)
-            uploaded_file.save(path)
+            print(message_to_publish)
+            #uploaded_file.save(path)
+            send_to_bucket(filename, uploaded_file, "poc-bucket-python")
+
 
             message["status"] = 0
             message["message"] = "Tarea creada exitosamente con el id {}".format(id_task)

@@ -44,10 +44,10 @@ def test_connect_ucket(bucket_name):
     my_bucket = storage_client.get_bucket(bucket_name)
     print(vars(my_bucket))
 
-def send_to_bucket(blob_name, file_path, bucket_name):
+def send_to_bucket(blob_name, file, bucket_name):
     bucket = storage_client.get_bucket(bucket_name)
     blob = bucket.blob(blob_name)
-    blob.upload_from_filename(file_path)
+    blob.upload_from_file(file)
     return blob
 
 def get_file_from_bucket(blob_name, file_path, bucket_name):
