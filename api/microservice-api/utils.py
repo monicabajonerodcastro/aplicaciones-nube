@@ -5,7 +5,7 @@ del os_path[len(os_path) - 1]
 if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
 else: sys.path.append(os.path.join("/",'constants'))
 
-import pika, json
+import pika, json, base64
 from constants import HOST_RABBIT_MQ
 
 import os
@@ -55,6 +55,7 @@ def get_file_from_bucket(blob_name, file_path, bucket_name):
     blob = bucket.blob(blob_name)
     with open(file_path, 'wb') as f:
         storage_client.download_blob_to_file(blob, f)
+        return base64.b64encode(f.read())
 
 def get_file_path_GCP(url, file_path):
     with open(file_path, 'wb') as f:
@@ -67,3 +68,9 @@ def my_compress_file_GCP(bucket_name, file_name):
     myZip = zipfile.ZipFile('myZip.zip', 'w')
     myZip.writestr(file_name, object_bytes, compress_type=zipfile.ZIP_DEFLATED)
     myZip.close()
+
+def download_file_from_bucket(file_name):
+    bucket = storage_client.get_bucket('poc-bucket-python')
+    blob = bucket.get_blob(file_name)
+    data = blob.download_as_string()
+    return base64.b64encode(data)

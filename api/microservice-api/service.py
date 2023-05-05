@@ -8,7 +8,7 @@ else: sys.path.append(os.path.join("/",'constants'))
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
-from utils import publish_message, send_to_bucket
+from utils import publish_message, send_to_bucket, download_file_from_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
 from constants import UPLOAD_FOLDER 
@@ -165,10 +165,9 @@ def get_file_by_task(id_task):
         return json.dumps(message), 404
     else:
         path = task.result_path
-        format = ""
         if path is None:
-            path =task.path
-        with open(path , "rb") as any_file:
-            data = base64.b64encode(any_file.read())
-            return {"status":0 ,"format":path.partition(".")[2], "mensaje": data.decode('utf-8')}        
+            path = task.path
+
+        data = download_file_from_bucket(path)
+        return {"status":0 , "mensaje": data.decode('utf-8')}        
 
