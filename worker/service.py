@@ -10,7 +10,7 @@ def process_task_by_id(id):
             task.last_time = datetime.datetime.utcnow()
             db.session.commit()
             try:
-                result_path = my_compress_file_GCP('poc-bucket-python', task.path, task.format)
+                result_path = my_compress_file_GCP(file_name=task.path, new_format=task.format)
                 task.status = "PROCESSED"
                 task.last_time = datetime.datetime.utcnow()
                 task.result_path = result_path

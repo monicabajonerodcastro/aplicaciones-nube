@@ -357,3 +357,4 @@ postgres_data/
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+**/.DS_Store

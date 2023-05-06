@@ -28,6 +28,9 @@ HOST_POSTGRES = '34.68.54.144'
 USER_POSTGRES = "postgres"
 PASSWORD_POSTGRES = "test_user"
 
+RUTA_JSON_GCP = "/files/gcloud.json"
+BUCKET_NAME_GCP = "poc-bucket-python"
+
 """
 ## VARIABLES LOCAL
 HOST_RABBIT_MQ = 'localhost'

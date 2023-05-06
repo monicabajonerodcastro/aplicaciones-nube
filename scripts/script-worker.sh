@@ -28,6 +28,16 @@ sudo apt-get update
 echo "********** INSTALLING DOCKER **********"
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+echo "********** CREATING THE FILES FOLDER **********"
+sudo mkdir files
+
+echo "********** CREATING THE VOLUME **********"
+sudo docker volume create --driver local \
+      --opt type=none \
+      --opt device=/files \
+      --opt o=bind \
+      files
+
 echo "********** SETTING UP GIT VARIABLES **********"
 git config --global user.name "Monica Bajonero"
 git config --global user.email m.bajonero@uniandes.edu.co
@@ -39,16 +49,13 @@ echo "********** CD FOLDER **********"
 cd aplicaciones-nube
 
 echo "********** CHECKOUT TO THE BRANCH **********"
-git fetch && git checkout feature/organizacion-componentes
+git fetch && git checkout feature/gcp-instances
 
 echo "********** PULLING THE LAST CHANGES **********"
-git pull origin feature/organizacion-componentes
+git pull origin feature/gcp-instances
 
 echo "********** CD FOLDER TO RUN **********"
 cd worker
-
-echo "********** CREATING THE VOLUME **********"
-sudo docker volume create files
 
 echo "********** DOCKER COMPOSE UP **********"
 sudo docker compose up --build -d

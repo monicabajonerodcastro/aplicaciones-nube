@@ -11,7 +11,7 @@ from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message, send_to_bucket, download_file_from_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
-from constants import UPLOAD_FOLDER 
+from constants import BUCKET_NAME_GCP 
 
 task_schema = TasksSchema()
 
@@ -48,7 +48,7 @@ def create_task(request):
             publish_message(queue="requests_queue", message=message_to_publish)
             print(message_to_publish)
             #uploaded_file.save(path)
-            send_to_bucket(filename, uploaded_file, "poc-bucket-python")
+            send_to_bucket(filename, uploaded_file, BUCKET_NAME_GCP)
 
 
             message["status"] = 0
