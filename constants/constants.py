@@ -15,12 +15,12 @@ PASSWORD_POSTGRES = "postgres"
 """
 
 ## VARIABLES CLOUD
-HOST_RABBIT_MQ = '34.125.96.109'
+HOST_RABBIT_MQ = '10.182.0.33'
 
 API_ENDPOINT_PUBLISH = "http://107.178.248.161/publish-pending-tasks" 
 API_ENDPOINT_SAVE = "http://107.178.248.161/save-task"
 
-API_ENDPOINT_PROCESS = "http://34.125.182.159:5004/process-task/{}"   
+API_ENDPOINT_PROCESS = "http://10.182.0.32:5004/process-task/{}"   
 UPLOAD_FOLDER = "/mnt/nfs_clientshare" 
 
 UPLOAD_PROCESSED_FOLDER = "/mnt/nfs_clientshare/{}.{}"
