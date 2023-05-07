@@ -4,7 +4,7 @@ COPY /api/microservice-api /api/microservice-api
 COPY /constants /constants
 
 RUN pip install -r /api/microservice-api/requirements.txt
-RUN mkdir -p /mnt/nfs_clientshare
+RUN mkdir -p /files
 
 WORKDIR /api/microservice-api
 
