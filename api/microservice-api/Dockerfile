@@ -5,6 +5,8 @@ COPY /constants /constants
 
 RUN pip install -r /api/microservice-api/requirements.txt
 RUN mkdir -p /files
+RUN cd files
+RUN touch gcloud.json
 
 WORKDIR /api/microservice-api
 
