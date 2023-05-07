@@ -14,7 +14,7 @@ from google.cloud import storage
 #TODO -> el valor es la ubicacion del archivo llave para acceder al bucket, debe cambiarse por la ruta de la
 #TODO -> llave y agregar ese archivo llave tipo JSON al docker
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
-storage_client = storage.Client()
+storage_client = ##storage.Client()
 
 def publish_message(queue, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
