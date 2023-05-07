@@ -13,7 +13,7 @@ from google.cloud import storage
 
 #TODO -> el valor es la ubicacion del archivo llave para acceder al bucket, debe cambiarse por la ruta de la
 #TODO -> llave y agregar ese archivo llave tipo JSON al docker
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
 storage_client = storage.Client()
 
 def publish_message(queue, message):
