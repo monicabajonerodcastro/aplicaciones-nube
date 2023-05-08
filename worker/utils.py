@@ -6,18 +6,32 @@ if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'
 else: sys.path.append(os.path.join("/",'constants'))
 
 import zipfile
-from constants import UPLOAD_PROCESSED_FOLDER
+from constants import BUCKET_NAME_GCP, RUTA_JSON_GCP
+from google.cloud import storage
 
-def compress_local_file(path, new_format):
-    split_path = path.split("/")
-    file_name = split_path[len(split_path)-1]
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+storage_client = storage.Client()
+
+def my_compress_file_GCP(file_name, new_format):
     split_file_name = file_name.split(".")
     if (len(split_file_name) > 1) :
         file_name_no_extension = split_file_name[0]
     else:
         file_name_no_extension = file_name
 
-    my_zip = zipfile.ZipFile(UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension, new_format), 'w')
-    my_zip.write(path, compress_type=zipfile.ZIP_DEFLATED)
-    my_zip.close()
-    return UPLOAD_PROCESSED_FOLDER.format(file_name_no_extension, new_format)
+    bucket = storage_client.get_bucket(BUCKET_NAME_GCP)
+    blob = bucket.get_blob(file_name)
+    object_bytes = blob.download_as_string()
+    new_file_name = file_name_no_extension + "." + new_format
+    myZip = zipfile.ZipFile(new_file_name, 'w')
+    myZip.writestr(file_name, object_bytes, compress_type=zipfile.ZIP_DEFLATED)
+    myZip.close()
+    send_to_bucket(new_file_name, new_file_name, BUCKET_NAME_GCP)
+    os.remove(new_file_name)
+    return new_file_name
+
+def send_to_bucket(blob_name, file_name, bucket_name):
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(blob_name)
+    blob.upload_from_filename(file_name)
+    return blob

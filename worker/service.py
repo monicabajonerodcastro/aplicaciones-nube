@@ -1,5 +1,5 @@
 from Models import Tasks, db
-from utils import compress_local_file
+from utils import my_compress_file_GCP
 import datetime
 
 
@@ -10,7 +10,7 @@ def process_task_by_id(id):
             task.last_time = datetime.datetime.utcnow()
             db.session.commit()
             try:
-                result_path = compress_local_file(task.path, task.format)
+                result_path = my_compress_file_GCP(file_name=task.path, new_format=task.format)
                 task.status = "PROCESSED"
                 task.last_time = datetime.datetime.utcnow()
                 task.result_path = result_path
