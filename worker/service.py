@@ -15,10 +15,12 @@ def process_task_by_id(id):
                 task.last_time = datetime.datetime.utcnow()
                 task.result_path = result_path
                 db.session.commit()
+                return "Task {} se empieza a procesar en la base de datos".format(id) 
             except Exception as e:
                 print(e, flush=True)
-                task.status = "UPLOADED"
+                #task.status = "UPLOADED"
                 task.last_time = datetime.datetime.utcnow()
                 db.session.commit()
+                return "Ocurrio un error al procesar la task {}. Error: {}".format(id, e) 
         else:
-            print("La tarea {} se encuentra en estado {} y no se puede procesar".format(task.id, task.status), flush=True)
+            return "La tarea {} se encuentra en estado {} y no se puede procesar".format(task.id, task.status)

@@ -10,14 +10,15 @@ from concurrent import futures
 
 import sys, os
 from service import call_endpoint_process
-from constants import PROJECT_NAME, SUBSCRIPTION_NAME
+from constants import PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME
 
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_NAME)
+subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME)
 
 def callback(message):
     print(" ======================= Process Received =======================", flush=True)
-    response = call_endpoint_process(message)
+    response = call_endpoint_process(message.data)
+    print(response.content)
     if(response.status_code == 200):
         message.ack()
 

@@ -11,7 +11,7 @@ from Models import db, Tasks, TasksSchema, Usuario
 from utils import publish_message_gcp, send_to_bucket, download_file_from_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
-from constants import BUCKET_NAME_GCP, REQUEST_TOPIC, UPLOAD_FOLDER
+from constants import BUCKET_NAME_GCP, REQUEST_TOPIC, UPLOAD_FOLDER, PROCESS_TOPIC
 
 task_schema = TasksSchema()
 
@@ -123,7 +123,7 @@ def publish_uploaded_tasks():
         message_to_publish = {
             "id" : task.id
         }
-        publish_message(queue="processes_queue", message=message_to_publish)
+        publish_message_gcp(PROCESS_TOPIC, message_to_publish)
         task.status = 'PROCESSING'
         db.session.commit()
         count += 1

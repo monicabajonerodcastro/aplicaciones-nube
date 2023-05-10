@@ -10,14 +10,17 @@ from constants import BUCKET_NAME_GCP, RUTA_JSON_GCP
 from google.cloud import storage
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "gcloud.json"
 storage_client = storage.Client()
 
 def my_compress_file_GCP(file_name, new_format):
-    split_file_name = file_name.split(".")
+    file_name_no_folder = file_name.split("/")[1]
+
+    split_file_name = file_name_no_folder.split(".")
     if (len(split_file_name) > 1) :
         file_name_no_extension = split_file_name[0]
     else:
-        file_name_no_extension = file_name
+        file_name_no_extension = file_name_no_folder
 
     bucket = storage_client.get_bucket(BUCKET_NAME_GCP)
     blob = bucket.get_blob(file_name)

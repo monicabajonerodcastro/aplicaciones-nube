@@ -32,7 +32,9 @@ BUCKET_NAME_GCP = "files-4204-bucket"
 
 PROJECT_NAME = "cloud-apps-4204"
 REQUEST_TOPIC = "projects/{}/topics/request-topic".format(PROJECT_NAME)
-SUBSCRIPTION_NAME = "request-topic-sub"
+PROCESS_TOPIC = "projects/{}/topics/process-topic".format(PROJECT_NAME)
+SUBSCRIPTION_REQUEST_NAME = "request-topic-sub"
+SUBSCRIPTION_PROCESS_NAME = "process-topic-sub"
 
 UPLOAD_FOLDER="upload/"
 DOWNLOAD_FOLDER="upload/"

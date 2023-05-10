@@ -11,14 +11,15 @@ from google.cloud import pubsub_v1
 from concurrent import futures
 
 from service import call_endpoint_save
-from constants import PROJECT_NAME, SUBSCRIPTION_NAME
+from constants import PROJECT_NAME, SUBSCRIPTION_REQUEST_NAME
 
 subscriber = pubsub_v1.SubscriberClient()
-subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_NAME)
+subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_REQUEST_NAME)
 
 def callback(message):
     print(" ======================= Request Received =======================", flush=True)
     response = call_endpoint_save(message.data)
+    print(response.content)
     if(response.status_code == 200):
         message.ack()
 
