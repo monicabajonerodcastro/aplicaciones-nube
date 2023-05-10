@@ -5,32 +5,28 @@ del os_path[len(os_path) - 1]
 if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
 else: sys.path.append(os.path.join("/",'constants'))
 
-import pika
+import json 
+
+from google.cloud import pubsub_v1
+from concurrent import futures
+
 from service import call_endpoint_save
-from constants import HOST_RABBIT_MQ
+from constants import PROJECT_NAME, SUBSCRIPTION_NAME
 
-def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(HOST_RABBIT_MQ))
-    channel = connection.channel()
-    channel.queue_declare(queue="requests_queue")
+subscriber = pubsub_v1.SubscriberClient()
+subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_NAME)
 
-    def callback(ch, method, properties, body):
-        print(" ======================= Request Received =======================", flush=True)
-        call_endpoint_save(body)
+def callback(message):
+    print(" ======================= Request Received =======================", flush=True)
+    response = call_endpoint_save(message.data)
+    if(response.status_code == 200):
+        message.ack()
 
-    channel.basic_consume(queue="requests_queue", auto_ack=True, on_message_callback=callback)
-    print(" *********************** Waiting for incoming requests ***********************", flush=True)
+future = subscriber.subscribe(subscription_path, callback=callback)
 
-    channel.start_consuming()
-
-if __name__ == '__main__':
+with subscriber:
     try:
-        main()
-    except Exception as e:
-        print(" *********************** Process interrupted ***********************", flush=True)
-        print(e, flush=True)
-        try:
-            sys.exit(0)
-        except:
-            os._exit(0)
- 
+        future.result()
+    except futures.TimeoutError:
+        future.cancel()  
+        future.result()  

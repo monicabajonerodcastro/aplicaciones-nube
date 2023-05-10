@@ -8,10 +8,10 @@ else: sys.path.append(os.path.join("/",'constants'))
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
-from utils import publish_message, send_to_bucket, download_file_from_bucket
+from utils import publish_message_gcp, send_to_bucket, download_file_from_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
-from constants import BUCKET_NAME_GCP 
+from constants import BUCKET_NAME_GCP, REQUEST_TOPIC, UPLOAD_FOLDER
 
 task_schema = TasksSchema()
 
@@ -39,17 +39,14 @@ def create_task(request):
             id_task = str(uuid.uuid4())
             format_task = request.form['format']
 
+            new_file_name = send_to_bucket(filename, uploaded_file, BUCKET_NAME_GCP)
+
             message_to_publish = {
                 "id" : id_task,
-                "path" : filename,
+                "path" : UPLOAD_FOLDER+new_file_name,
                 "format" : format_task
             }
-            
-            publish_message(queue="requests_queue", message=message_to_publish)
-            print(message_to_publish)
-            #uploaded_file.save(path)
-            send_to_bucket(filename, uploaded_file, BUCKET_NAME_GCP)
-
+            publish_message_gcp(REQUEST_TOPIC, message_to_publish)
 
             message["status"] = 0
             message["message"] = "Tarea creada exitosamente con el id {}".format(id_task)
