@@ -2,6 +2,7 @@ FROM python:3.9-slim
 
 ENV PYTHONUNBUFFERED 1
 
+RUN mkdir files
 COPY /constants /constants
 COPY /api/message-queue /api/message-queue
 
