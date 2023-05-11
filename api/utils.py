@@ -6,14 +6,13 @@ if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'
 else: sys.path.append(os.path.join("/",'constants'))
 
 import json, base64
-from constants import BUCKET_NAME_GCP, UPLOAD_FOLDER
+from constants import BUCKET_NAME_GCP, UPLOAD_FOLDER, RUTA_JSON_GCP
 
 import os
 from google.cloud import storage, pubsub_v1
 
-#TODO -> el valor es la ubicacion del archivo llave para acceder al bucket, debe cambiarse por la ruta de la
-#TODO -> llave y agregar ese archivo llave tipo JSON al docker
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
 
 storage_client = storage.Client()
 publisher = pubsub_v1.PublisherClient()
