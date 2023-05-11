@@ -4,20 +4,11 @@ volumes:
   files:
     external: true
 services:
-  message-queue-request:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./api/message-queue/Dockerfile
-    command: "python /api/message-queue/consumer-request-queue.py"
-  message-queue-process:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./api/message-queue/Dockerfile
-    command: "python /api/message-queue/consumer-process-queue.py"
-  microservice-api:
+  
+  api:
     build: 
       context: ../../aplicaciones-nube
-      dockerfile: ./api/microservice-api/Dockerfile
+      dockerfile: ./api/Dockerfile
     ports:
     - 5002:5002
     volumes:
