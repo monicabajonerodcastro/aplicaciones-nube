@@ -8,12 +8,21 @@ else: sys.path.append(os.path.join("/",'constants'))
 from google.cloud import pubsub_v1
 from concurrent import futures
 
-import sys, os
-from service import call_endpoint_process
-from constants import PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME
+import sys, os, json, requests
+from constants import PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME, API_ENDPOINT_PROCESS
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
 
 subscriber = pubsub_v1.SubscriberClient()
 subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME)
+
+def call_endpoint_process(body):
+    body_decoded = body.decode("utf-8")
+    body_json = json.loads(body_decoded)
+    r = requests.post(url = API_ENDPOINT_PROCESS.format(body_json["id"])) 
+    #r = requests.post(url="http://localhost:5003/process-task/" + body_json["id"], json=body_json)
+    return r 
 
 def callback(message):
     print(" ======================= Process Received =======================", flush=True)

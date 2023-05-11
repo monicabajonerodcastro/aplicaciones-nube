@@ -12,4 +12,9 @@ services:
     - files:/files
     ports:
     - 5004:5004
+  message-queue-process:
+    build:
+      context: ../../aplicaciones-nube
+      dockerfile: ./worker/message-queue/Dockerfile
+    command: "python /worker/message-queue/consumer-process-queue.py"
 

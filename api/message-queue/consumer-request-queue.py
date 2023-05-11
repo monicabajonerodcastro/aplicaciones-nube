@@ -5,16 +5,26 @@ del os_path[len(os_path) - 1]
 if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
 else: sys.path.append(os.path.join("/",'constants'))
 
-import json 
+import json, requests
 
 from google.cloud import pubsub_v1
 from concurrent import futures
 
-from service import call_endpoint_save
-from constants import PROJECT_NAME, SUBSCRIPTION_REQUEST_NAME
+from constants import PROJECT_NAME, SUBSCRIPTION_REQUEST_NAME, API_ENDPOINT_SAVE, RUTA_JSON_GCP
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
 
 subscriber = pubsub_v1.SubscriberClient()
 subscription_path = subscriber.subscription_path(PROJECT_NAME, SUBSCRIPTION_REQUEST_NAME)
+
+def call_endpoint_save(body):
+    body_decoded = body.decode("utf-8")
+    body_json = json.loads(body_decoded)
+    r = requests.post(url = API_ENDPOINT_SAVE, json=body_json)
+    #r = requests.post(url="http://localhost:5010/save-task", json=body_json)
+    return r
+
 
 def callback(message):
     print(" ======================= Request Received =======================", flush=True)

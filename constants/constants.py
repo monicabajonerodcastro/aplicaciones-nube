@@ -16,10 +16,10 @@ PASSWORD_POSTGRES = "postgres"
 
 ## VARIABLES CLOUD
 
-API_ENDPOINT_PUBLISH = "http://107.178.248.161/publish-pending-tasks" 
-API_ENDPOINT_SAVE = "http://107.178.248.161/save-task"
+API_ENDPOINT_PUBLISH = "http://api:5002/publish-pending-tasks" 
+API_ENDPOINT_SAVE = "http://api:5002/save-task"
 
-API_ENDPOINT_PROCESS = "http://10.182.15.211:5004/process-task/{}"   
+API_ENDPOINT_PROCESS = "http://worker:5004/process-task/{}"   
 
 HOST_POSTGRES = '34.68.54.144'
 USER_POSTGRES = "postgres"

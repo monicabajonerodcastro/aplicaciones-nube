@@ -1,17 +1,13 @@
 version: '3.6'
 
+volumes:
+  files:
+    external: true
+
 services:
   conversion_cron:
     build:
       context: ../../aplicaciones-nube
       dockerfile: ./services/conversion_cron/Dockerfile
-  message-queue-request:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./services/message-queue/Dockerfile
-    command: "python /services/message-queue/consumer-request-queue.py"
-  message-queue-process:
-    build:
-      context: ../../aplicaciones-nube
-      dockerfile: ./services/message-queue/Dockerfile
-    command: "python /services/message-queue/consumer-process-queue.py"
+  
+  
