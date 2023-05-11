@@ -18,7 +18,7 @@ def process_task_by_id(id):
                 return "Task {} se empieza a procesar en la base de datos".format(id) 
             except Exception as e:
                 print(e, flush=True)
-                #task.status = "UPLOADED"
+                task.status = "UPLOADED"
                 task.last_time = datetime.datetime.utcnow()
                 db.session.commit()
                 return "Ocurrio un error al procesar la task {}. Error: {}".format(id, e) 
