@@ -12,12 +12,12 @@ services:
     ports:
     - 5002:5002
     volumes:
-      - files:/files
+    - files:/files
   message-queue-request:
     build:
       context: ../../aplicaciones-nube
       dockerfile: ./api/message-queue/Dockerfile
     command: "python /api/message-queue/consumer-request-queue.py"
     volumes:
-      - files:/files
+    - files:/files
 
