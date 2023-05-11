@@ -17,4 +17,5 @@ services:
       context: ../../aplicaciones-nube
       dockerfile: ./worker/message-queue/Dockerfile
     command: "python /worker/message-queue/consumer-process-queue.py"
-
+    volumes:
+    - files:/files

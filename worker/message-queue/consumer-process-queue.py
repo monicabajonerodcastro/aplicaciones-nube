@@ -9,7 +9,7 @@ from google.cloud import pubsub_v1
 from concurrent import futures
 
 import sys, os, json, requests
-from constants import PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME, API_ENDPOINT_PROCESS
+from constants import PROJECT_NAME, SUBSCRIPTION_PROCESS_NAME, API_ENDPOINT_PROCESS, RUTA_JSON_GCP
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
 #os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
