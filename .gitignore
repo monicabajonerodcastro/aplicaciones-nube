@@ -358,3 +358,4 @@ postgres_data/
 terraform.tfstate
 terraform.tfstate.backup
 **/.DS_Store
+**/gcloud.json

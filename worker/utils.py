@@ -1,19 +1,12 @@
-#Import constants
-import sys, os
-os_path = os.path.dirname(sys.path[0]).split("/")
-print(os.path.join("/".join(os_path)))
-if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
-else: sys.path.append(os.path.join("/",'constants'))
-
-import zipfile
+import zipfile, os
 from constants import BUCKET_NAME_GCP
 from google.cloud import storage
 
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "gcloud.json"
 storage_client = storage.Client()
 
 def my_compress_file_GCP(file_name, new_format):
+    
     split_file_name = file_name.split(".")
     if (len(split_file_name) > 1) :
         file_name_no_extension = split_file_name[0]
@@ -23,7 +16,8 @@ def my_compress_file_GCP(file_name, new_format):
     bucket = storage_client.get_bucket(BUCKET_NAME_GCP)
     blob = bucket.get_blob(file_name)
     object_bytes = blob.download_as_string()
-    new_file_name = file_name_no_extension + "." + new_format
+    new_file_name_no_ext = file_name_no_extension.split("/")[1]
+    new_file_name = new_file_name_no_ext + "." + new_format
     myZip = zipfile.ZipFile(new_file_name, 'w')
     myZip.writestr(file_name, object_bytes, compress_type=zipfile.ZIP_DEFLATED)
     myZip.close()

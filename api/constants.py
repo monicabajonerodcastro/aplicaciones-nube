@@ -1,0 +1,7 @@
+HOST_POSTGRES = "34.16.146.221" 
+USER_POSTGRES = "postgres"
+PASSWORD_POSTGRES = "test_user"
+BUCKET_NAME_GCP="bucket-cloud-apps-gcp"
+REQUEST_TOPIC = "projects/cloud-apps-387203/topics/request-topic"
+UPLOAD_FOLDER = "upload/"
+PROCESS_TOPIC = "projects/cloud-apps-387203/topics/process-topic" 

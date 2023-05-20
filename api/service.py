@@ -1,17 +1,10 @@
-#Import constants
-import sys, os
-os_path = os.path.dirname(sys.path[0]).split("/")
-del os_path[len(os_path) - 1]
-if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
-else: sys.path.append(os.path.join("/",'constants'))
-
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
-from utils import publish_message, send_to_bucket, download_file_from_bucket
+from utils import publish_message_gcp, send_to_bucket, download_file_from_bucket
 from flask_jwt_extended import create_access_token
 import hashlib , base64
-from constants import BUCKET_NAME_GCP 
+from constants import BUCKET_NAME_GCP, REQUEST_TOPIC, UPLOAD_FOLDER, PROCESS_TOPIC
 
 task_schema = TasksSchema()
 
@@ -39,17 +32,14 @@ def create_task(request):
             id_task = str(uuid.uuid4())
             format_task = request.form['format']
 
+            new_file_name = send_to_bucket(filename, uploaded_file, BUCKET_NAME_GCP)
+
             message_to_publish = {
                 "id" : id_task,
-                "path" : filename,
+                "path" : UPLOAD_FOLDER+new_file_name,
                 "format" : format_task
             }
-            
-            publish_message(queue="requests_queue", message=message_to_publish)
-            print(message_to_publish)
-            #uploaded_file.save(path)
-            send_to_bucket(filename, uploaded_file, BUCKET_NAME_GCP)
-
+            publish_message_gcp(REQUEST_TOPIC, message_to_publish)
 
             message["status"] = 0
             message["message"] = "Tarea creada exitosamente con el id {}".format(id_task)
@@ -58,9 +48,13 @@ def create_task(request):
     return json.dumps(message), status
 
 def save_task_request(request):
-    id_task = request.json['id']
-    format_task = request.json['format']
-    path = request.json['path']
+    json_request = request._get_current_object().get_json()
+    encoded_message = json_request.get('message').get("data")
+    decoded_message = base64.b64decode(encoded_message).decode("utf-8") 
+    data = json.loads(decoded_message)
+    id_task = data.get('id')
+    format_task = data.get('format')
+    path = data.get('path')
 
     time_now = datetime.datetime.utcnow()
     new_task = Tasks(id=id_task, path=path, status="UPLOADED", time=time_now, format=format_task, last_time=time_now)
@@ -126,7 +120,7 @@ def publish_uploaded_tasks():
         message_to_publish = {
             "id" : task.id
         }
-        publish_message(queue="processes_queue", message=message_to_publish)
+        publish_message_gcp(PROCESS_TOPIC, message_to_publish)
         task.status = 'PROCESSING'
         db.session.commit()
         count += 1
@@ -169,5 +163,4 @@ def get_file_by_task(id_task):
             path = task.path
 
         data = download_file_from_bucket(path)
-        return {"status":0 , "mensaje": data.decode('utf-8')}        
-
+        return {"status":0 , "mensaje": data.decode('utf-8')}   

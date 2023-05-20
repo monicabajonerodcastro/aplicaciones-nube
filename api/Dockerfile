@@ -1,10 +1,7 @@
 FROM python:3.9-slim
 
-COPY /api/microservice-api /api/microservice-api
-COPY /constants /constants
+COPY . .
 
-RUN pip install -r /api/microservice-api/requirements.txt
-
-WORKDIR /api/microservice-api
+RUN pip install -r requirements.txt
 
 CMD gunicorn --bind 0.0.0.0:5002 app:app
