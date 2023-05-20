@@ -21,10 +21,10 @@ db.init_app(app)
 
 @app.route('/process-task/<id_task>', methods = ['POST'])
 def process_task(id_task):
-    process_task_by_id(id_task)
+    response = process_task_by_id(id_task)
     message = {
         "status": 0,
-        "message": "Task {} se empieza a procesar en la base de datos".format(id_task) 
+        "message": response
     }
     return json.dumps(message), 200
 
