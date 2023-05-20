@@ -6,10 +6,11 @@ if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'
 else: sys.path.append(os.path.join("/",'constants'))
 
 import zipfile
-from constants import BUCKET_NAME_GCP, RUTA_JSON_GCP
+from constants import BUCKET_NAME_GCP
 from google.cloud import storage
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "gcloud.json"
 storage_client = storage.Client()
 
 def my_compress_file_GCP(file_name, new_format):

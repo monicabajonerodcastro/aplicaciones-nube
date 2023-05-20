@@ -1,15 +1,10 @@
 version: '3.6'
 
-volumes:
-  files:
-    external: true
 services:
   worker:
     build: 
       context: ../../aplicaciones-nube
       dockerfile: ./worker/Dockerfile
-    volumes:
-    - files:/files
     ports:
     - 5004:5004
 
