@@ -1,10 +1,3 @@
-#Import constants
-import sys, os
-os_path = os.path.dirname(sys.path[0]).split("/")
-del os_path[len(os_path) - 1]
-if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
-else: sys.path.append(os.path.join("/",'constants'))
-
 from flask import Flask
 from Models import db
 from service import process_task_by_id
