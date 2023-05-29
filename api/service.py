@@ -1,10 +1,3 @@
-#Import constants
-import sys, os
-os_path = os.path.dirname(sys.path[0]).split("/")
-del os_path[len(os_path) - 1]
-if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
-else: sys.path.append(os.path.join("/",'constants'))
-
 import uuid, datetime, json
 from werkzeug.utils import secure_filename
 from Models import db, Tasks, TasksSchema, Usuario
@@ -55,9 +48,13 @@ def create_task(request):
     return json.dumps(message), status
 
 def save_task_request(request):
-    id_task = request.json['id']
-    format_task = request.json['format']
-    path = request.json['path']
+    json_request = request._get_current_object().get_json()
+    encoded_message = json_request.get('message').get("data")
+    decoded_message = base64.b64decode(encoded_message).decode("utf-8") 
+    data = json.loads(decoded_message)
+    id_task = data.get('id')
+    format_task = data.get('format')
+    path = data.get('path')
 
     time_now = datetime.datetime.utcnow()
     new_task = Tasks(id=id_task, path=path, status="UPLOADED", time=time_now, format=format_task, last_time=time_now)
@@ -166,5 +163,4 @@ def get_file_by_task(id_task):
             path = task.path
 
         data = download_file_from_bucket(path)
-        return {"status":0 , "mensaje": data.decode('utf-8')}        
-
+        return {"status":0 , "mensaje": data.decode('utf-8')}   

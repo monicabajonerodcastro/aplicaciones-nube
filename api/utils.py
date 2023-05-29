@@ -1,18 +1,10 @@
-#Import constants
-import sys, os
-os_path = os.path.dirname(sys.path[0]).split("/")
-del os_path[len(os_path) - 1]
-if len(os_path) > 1 : sys.path.append(os.path.join("/".join(os_path),'constants'))
-else: sys.path.append(os.path.join("/",'constants'))
-
 import json, base64
-from constants import BUCKET_NAME_GCP, UPLOAD_FOLDER, RUTA_JSON_GCP
+from constants import BUCKET_NAME_GCP, UPLOAD_FOLDER
 
 import os
 from google.cloud import storage, pubsub_v1
 
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = RUTA_JSON_GCP
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'gcloud.json'
 
 storage_client = storage.Client()
 publisher = pubsub_v1.PublisherClient()
@@ -29,7 +21,6 @@ def build_extension_from_file(file_name):
     return ext
 
 def publish_message_gcp(topic_name, message):
-    print(message)
     message_to_publish = json.dumps(message).encode('utf-8')
     future = publisher.publish(topic_name, message_to_publish)
     future.result()
