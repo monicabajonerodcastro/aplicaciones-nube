@@ -11,7 +11,7 @@ def my_compress_file_GCP(file_name, new_format):
     if (len(split_file_name) > 1) :
         file_name_no_extension = split_file_name[0]
     else:
-        file_name_no_extension = file_name
+        file_name_no_extension = file_name_no_folder
 
     bucket = storage_client.get_bucket(BUCKET_NAME_GCP)
     blob = bucket.get_blob(file_name)
